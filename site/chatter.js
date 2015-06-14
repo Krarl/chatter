@@ -10,7 +10,7 @@ while (username === "" || username === null)
 	username = window.prompt("What do you want to be called?", "");
 }
 
-var socket = new WebSocket("ws://81.232.154.177:42112"); //måste vara efter prompten, annars slutar det att  fungera i firefox...
+var socket = new WebSocket("ws://chatter-krarl.rhcloud.com:8000"); //måste vara efter prompten, annars slutar det att  fungera i firefox...
 
 $(window).unload(function() {
 	var disconnect = { type: "disconnect" };
@@ -68,7 +68,7 @@ socket.onmessage = function(msg) {
 	{
 		writeToChat(data.data, "othertext", othername);
 	}
-	else if (data.type == "connect")
+	else if (data.type == "start")
 	{
 		othername = data.data;
 		writeToChat("Connected to " + othername + "!");
