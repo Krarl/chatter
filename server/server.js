@@ -34,23 +34,21 @@ function send(connection, type, data) {
         connection.sendUTF(pack({type: type, data: data}));
 }
 
-function addUser(connection) {
+function addUser(con) {
     var user = {
     name: 'Anonymous',
     other: null,
-    lastSeen: new Date().getTime(),
-    connection: connection,
-    havePinged: false
+    connection: con,
     };
-    users[connection.id] = user;
+    users[con.id] = user;
 }
 
 function connectUsers(a, b) {
+    log(nameConnection(a.connection) + ' and ' + nameConnection(b.connection) + ' are now talking');
     a.other = b;
     b.other = a;
     send(a.connection, 'start', b.name);
     send(b.connection, 'start', a.name);
-    log(nameConnection(a.connection) + ' and ' + nameConnection(b.connection) + ' are now talking');
 }
 
 var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -77,7 +75,7 @@ function originIsAllowed(origin) {
 }
 
 function nameConnection(connection) {
-    return connection.remoteAddress + '[' + id + '](' + users[connection.id].name + ')';
+    return connection.remoteAddress + '[' + connection.id + '](' + users[connection.id].name + ')';
 }
 
 function endChat(id) {
@@ -117,8 +115,6 @@ wsServer.on('request', function(request) {
         if (id in users == -1)
             return;
 
-        users[id].lastSeen = new Date().getTime();
-
         if (message.type == 'utf8') {
             var msg = JSON.parse(message.utf8Data);
             if (msg.type == 'new') {
@@ -152,6 +148,6 @@ wsServer.on('request', function(request) {
     });
     connection.on('close', function(reasonCode, description) {
         log(nameConnection(connection) + ' disconnected: ' + description);
-        removeUser(id);
+        removeUser(connection.id);
     });
 });
