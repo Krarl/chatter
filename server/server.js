@@ -2,10 +2,18 @@
 
 var WebSocketServer = require('websocket').server;
 var http = require('http');
+var fs = require('fs');
+var sanitize = require("sanitize-filename");
 
 var nextId = 1;
 
-function log(text) {
+var saveConversations = true;
+
+function getUnixTime() {
+    return Math.floor(Date.now() / 1000)
+}
+
+function getPrettyTime() {
     function fix(num) {
         if (num.length == 1)
             return '0' + num;
@@ -14,11 +22,14 @@ function log(text) {
     }
 
     var now = new Date();
-    console.log(now.getUTCFullYear().toString() + '-' + fix(now.getUTCMonth().toString()) + '-' + fix(now.getUTCDate().toString())
+    return now.getUTCFullYear().toString() + '-' + fix(now.getUTCMonth().toString()) + '-' + fix(now.getUTCDate().toString())
      + ' ' + fix(now.getUTCHours().toString()) + ':' + fix(now.getUTCMinutes().toString()) + ':' + fix(now.getUTCSeconds().toString())
-     + ' UTC: ' + text);
+     + ' UTC';
 }
 
+function log(text) {
+    console.log(getPrettyTime() + ': ' + text);
+}
 
 var users = {};
 var waiting = [];
@@ -36,9 +47,10 @@ function send(connection, type, data) {
 
 function addUser(con) {
     var user = {
-    name: 'Anonymous',
-    other: null,
-    connection: con,
+        name: 'Anonymous',
+        other: null,
+        connection: con,
+        conversation: ""
     };
     users[con.id] = user;
 }
@@ -54,6 +66,13 @@ function connectUsers(a, b) {
 var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 log('PORT=' + port + ' IP=' + ip);
+
+var dir = process.env.OPENSHIFT_DATA_DIR || '';
+
+if (process.env.OPENSHIFT_APP_NAME == undefined) {
+    saveConversations = false; //vill inte ha massa loggar från då jag testat lokalt
+}
+
 var server = http.createServer(function(request, response) {
     log('Received request for ' + request.url);
     response.writeHead(404);
@@ -64,13 +83,25 @@ server.listen(port, ip, function() {
     log('Server is listening on port ' + port);
 });
 
+if (saveConversations) {
+    log("Chat logs will be saved");
+} else {
+    log("Chat logs will not be saved");
+}
+
 wsServer = new WebSocketServer({
     httpServer: server,
     autoAcceptConnections: false
 });
 
 function originIsAllowed(origin) {
-    // put logic here to detect whether the specified origin is allowed.
+    if (process.env.OPENSHIFT_NAMESPACE != undefined) {
+        if (origin == "http://krarl.github.io")
+            return true;
+        else
+            return false;
+    }
+
     return true;
 }
 
@@ -81,6 +112,16 @@ function nameConnection(connection) {
 function endChat(id) {
     if (users[id].other != null) {
         log(nameConnection(users[id].connection) + ' and ' + nameConnection(users[id].other.connection) + ' ended their chat');
+        if (saveConversations) {
+            var path = dir + "logs/" + getPrettyTime() + "-" + sanitize(users[id].name + "-" + users[id].other.name);
+            fs.writeFile(path, users[id].conversation, function(err) {
+                if(err)
+                    return log("Error saving file: " + err);
+            });
+            users[id].conversation = "";
+            users[id].other.conversation = "";
+        }
+
         send(users[id].other.connection, 'end');
         users[id].other.other = null;
         users[id].other = null;
@@ -139,6 +180,11 @@ wsServer.on('request', function(request) {
             else if (msg.type == 'msg') {
                 if (users[id].other != null) {
                     send(users[id].other.connection, 'msg', msg.data);
+
+                    if (saveConversations) {
+                        users[id].conversation += getPrettyTime() + ' ' + users[id].name + ': ' + msg.data + "\n";
+                        users[id].other.conversation += getPrettyTime() + ' ' + users[id].other.name + ': ' + msg.data + "\n";
+                    }
                 }
             }
             else if (msg.type == 'ping') {

@@ -9,6 +9,7 @@
   "author": "Karl Lundstig",
   "license": "ISC",
   "dependencies": {
-    "websocket": "^1.0.19"
+    "websocket": "^1.0.19",
+    "sanitize-filename": "*"
   }
 }
