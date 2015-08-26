@@ -74,7 +74,7 @@ if (process.env.OPENSHIFT_APP_NAME == undefined) {
 }
 
 var server = http.createServer(function(request, response) {
-    log('Received request for ' + request.url);
+    log('Received request for ' + request.url + ' from ' + request.socket.remoteAddress);
     response.writeHead(404);
     response.end();
 }, port, ip);
