@@ -90,14 +90,22 @@ socket.onmessage = function(msg) {
 	}
 	else if (data.type == "disconnect")
 	{
-		writeToChat("Disconnected by server")
+		writeToChat("Disconnected by server");
 		if (data.data != undefined)
-			writeToChat("Reason: " + data.data)
+			writeToChat("Reason: " + data.data);
 		$("#write").prop("disabled", true);
 		$("#send").addClass("disabled");
 		$("#end_new").removeClass("warning");
 	}
 };
+
+socket.onclose = function() {
+	writeToChat("Connection lost");
+	$("#write").prop("disabled", true);
+	$("#send").addClass("disabled");
+	$("#end_new").addClass("disabled");
+	$("#end_new").removeClass("warning");
+}
 
 sendMessage = function(message) {
 	var msg = {

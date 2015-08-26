@@ -1,5 +1,3 @@
-* Printa ip för http connection, jag vill veta vem det är
-* Så att klienten pingar servern, och visar något om den tappat connection
 * Skickar man extremt långa meddelanden kickas man tyst av servern, och meddelandet kommer ändå fram. Lite underligt
     * Lägg in en klientlimit på meddelandelängd
     * Försök meddela klienter som kickas av websockets?
