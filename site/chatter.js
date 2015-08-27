@@ -100,7 +100,7 @@ socket.onmessage = function(msg) {
 };
 
 socket.onclose = function() {
-	writeToChat("Connection lost");
+	writeToChat("Connection lost, try refreshing the page");
 	$("#write").prop("disabled", true);
 	$("#send").addClass("disabled");
 	$("#end_new").addClass("disabled");
