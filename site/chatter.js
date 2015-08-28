@@ -10,7 +10,7 @@ while (username === "" || username === null)
 	username = window.prompt("What do you want to be called?", "");
 }
 
-var socket = new WebSocket("ws://chatter-krarl.rhcloud.com:8000"); //måste vara efter prompten, annars slutar det att  fungera i firefox...
+var socket = new WebSocket("ws://chatter-krarl.rhcloud.com:8000");
 
 $(window).unload(function() {
 	var disconnect = { type: "disconnect" };
