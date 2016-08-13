@@ -96,7 +96,7 @@ wsServer = new WebSocketServer({
 
 function originIsAllowed(origin) {
     if (process.env.OPENSHIFT_NAMESPACE != undefined) {
-        if (origin == "http://krarl.github.io" || origin == "https://krarl.github.io")
+        if (origin == "http://www.lundstig.com" || origin == "https://www.lundstig.com" || origin == "http://krarl.github.io" || origin == "https://krarl.github.io")
             return true;
         else
             return false;
