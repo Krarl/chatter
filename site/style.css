@@ -1,142 +1,140 @@
-<style>
-    * {
-        padding: 0px;
-    }
+* {
+    padding: 0px;
+}
 
-    h1, h2, p, div, a, span, input {
-        font-family: Lato, Verdana, Arial;
-        color: #ecf0f1;
-    }
+h1, h2, p, div, a, span, input {
+    font-family: Lato, Verdana, Arial;
+    color: #ecf0f1;
+}
 
-    p {
-        word-wrap: break-word;
-        margin: 2px;
-    }
+p {
+    word-wrap: break-word;
+    margin: 2px;
+}
 
-    h1 {
-        margin: 15px;
-        margin-bottom: 7px;
-        font-size: 32px;
-    }
+h1 {
+    margin: 15px;
+    margin-bottom: 7px;
+    font-size: 32px;
+}
 
-    body {
-        background-color: #1f253d;
-    }
+body {
+    background-color: #1f253d;
+}
 
-    input[type="text"] {
-        position: absolute;
-        bottom: 50px;
-        left: 0px;
-        width: calc(100% - 32px);
-        height: 30px;
-        margin: 6px;
-        border: 1px solid #1F253D;
-        border-radius: 3px;
-        font-size: 18px;
-        appearance: none;
-        box-shadow: none;
-        background-color: #50597B;
-        padding-left: 10px;
-        padding-right: 10px;
-        transition: 400ms;
-    }
+input[type="text"] {
+    position: absolute;
+    bottom: 50px;
+    left: 0px;
+    width: calc(100% - 32px);
+    height: 30px;
+    margin: 6px;
+    border: 1px solid #1F253D;
+    border-radius: 3px;
+    font-size: 18px;
+    appearance: none;
+    box-shadow: none;
+    background-color: #50597B;
+    padding-left: 10px;
+    padding-right: 10px;
+    transition: 400ms;
+}
 
-    input[type="text"]:focus {
-        outline: none;
-    }
+input[type="text"]:focus {
+    outline: none;
+}
 
-    input[type="text"]:hover:not(:disabled) {
-        border: 1px solid #11a8ab;
-        transition: 200ms;
-    }
+input[type="text"]:hover:not(:disabled) {
+    border: 1px solid #11a8ab;
+    transition: 200ms;
+}
 
-    .center {
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-    }
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
 
-    .button1 {
-        height: 50px;
-        text-align: center;
-        vertical-align: middle;
-        margin: 0px;
-        padding: 0px;
-        transition: 300ms;
-    }
+.button1 {
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0px;
+    padding: 0px;
+    transition: 300ms;
+}
 
-    .button1 span {
-        display: inline-block;
-        vertical-align: middle;
-        line-height: 46px;
-        font-size: 18px;
-    }
+.button1 span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 46px;
+    font-size: 18px;
+}
 
-    #content {
-        width: 90%;
-        height: calc(100vh - 95px);
-        background-color: #394264;
-        border-radius: 10px;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0px 0px 1px #000;
-        text-align: left;
-    }
+#content {
+    width: 90%;
+    height: calc(100vh - 95px);
+    background-color: #394264;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0px 0px 1px #000;
+    text-align: left;
+}
 
-    #controls {
-        display: inline-block;
-        position: absolute;
-        width: 100%;
-        bottom: 0;
-        left: 0;
-    }
+#controls {
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
 
-    #chat {
-        padding: 20px;
-        overflow: auto;
-        height: calc(100% - 8em);
-    }
+#chat {
+    padding: 20px;
+    overflow: auto;
+    height: calc(100% - 8em);
+}
 
-    #chat p {
-        margin: 4px;
-    }
+#chat p {
+    margin: 4px;
+}
 
-    #info {
-        font-size: 0.8em;
-    }
+#info {
+    font-size: 0.8em;
+}
 
-    .othertext {
-        color: #E64C65;
-    }
+.othertext {
+    color: #E64C65;
+}
 
-    .youtext {
-        color: #FCB150;
-    }
+.youtext {
+    color: #FCB150;
+}
 
-    #send {
-        float: left;
-        border-right: 1px solid #1F253D;
-        width: calc(50% - 1px);
-        background-color: #11A8AB;
-    }
+#send {
+    float: left;
+    border-right: 1px solid #1F253D;
+    width: calc(50% - 1px);
+    background-color: #11A8AB;
+}
 
-    #end_new {
-        float: right;
-        width: 50%;
-        background-color: #11A8AB;
-    }
+#end_new {
+    float: right;
+    width: 50%;
+    background-color: #11A8AB;
+}
 
-    #send:hover, #end_new:hover {
-        transition: 300ms;
-        background-color: #0d9092;
-    }
+#send:hover, #end_new:hover {
+    transition: 300ms;
+    background-color: #0d9092;
+}
 
-    #end_new.warning:hover {
-        transition: 300ms;
-        background-color: #E64C65;
-    }
+#end_new.warning:hover {
+    transition: 300ms;
+    background-color: #E64C65;
+}
 
-    .disabled, *:disabled {
-        background-color: gray !important;
-    }
-</style>
+.disabled, *:disabled {
+    background-color: gray !important;
+}
