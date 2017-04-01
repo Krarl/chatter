@@ -2,9 +2,9 @@
     padding: 0px;
 }
 
-h1, h2, p, div, a, span, input {
-    font-family: Lato, Verdana, Arial;
-    color: #ecf0f1;
+h1, h2, p, div, a, span, input, .sweet-alert {
+    font-family: Lato, Verdana, Arial !important;
+    color: #ecf0f1 !important;
 }
 
 p {
@@ -64,6 +64,14 @@ input[type="text"]:hover:not(:disabled) {
     transition: 300ms;
 }
 
+.button1.disabled {
+    cursor: default;
+}
+
+.button1:not(disabled) {
+    cursor: pointer;
+}
+
 .button1 span {
     display: inline-block;
     vertical-align: middle;
@@ -80,6 +88,52 @@ input[type="text"]:hover:not(:disabled) {
     overflow: hidden;
     box-shadow: 0px 0px 1px #000;
     text-align: left;
+}
+
+#setup {
+    width: 500px;
+    max-width: 90%;
+    height: 150px;
+    margin-top: 15px;
+    background-color: #394264;
+    border-radius: 10px;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    box-shadow: 0px 0px 1px #000;
+    text-align: left;
+}
+
+#username {
+    top: 20px;
+    left: 20px;
+    margin: 0px;
+    width: calc(100% - 60px);
+}
+
+#go {
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    display: block;
+    border-radius: 10px;
+    border: 1px solid #1F253D;
+    background-color: #11A8AB;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    top: 80px;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #a4aaba;
+}
+::-moz-placeholder { /* Firefox */
+   color: #a4aaba;
+   opacity: 1;
+}
+:-ms-input-placeholder { /* Internet Explorer */
+   color: #a4aaba;
 }
 
 #controls {
@@ -125,7 +179,7 @@ input[type="text"]:hover:not(:disabled) {
     background-color: #11A8AB;
 }
 
-#send:hover, #end_new:hover {
+#send:hover, #end_new:hover, #go:hover {
     transition: 300ms;
     background-color: #0d9092;
 }
