@@ -8,25 +8,6 @@ var socket;
 var othername;
 var username = "";
 
-/*swal({
-  title: "Chasdftter",
-  text: "What do you want to be called?",
-  type: "input",
-  showCancelButton: false,
-  closeOnConfirm: false,
-  allowEscapeKey: false,
-  animation: "pop",
-  inputPlaceholder: "Write something"
-},
-function(inputValue){
-  if (inputValue === false || inputValue === "")
-  	return false;
-
-  username = inputValue;
-  setup();
-  swal.close();
-});*/
-
 var inputUsername = $("#username");
 var buttonGo = $("#go");
 const KeyEnter = 13;
@@ -46,7 +27,7 @@ buttonGo.click(function() {
 	if (buttonGo.hasClass("disabled"))
 		return;
 
-	username = inputUsername.text;
+	username = inputUsername.val();
 	setup();
 });
 
