@@ -22,7 +22,7 @@ function getPrettyTime() {
     }
 
     var now = new Date();
-    return now.getUTCFullYear().toString() + '-' + fix(now.getUTCMonth().toString()) + '-' + fix(now.getUTCDate().toString())
+    return now.getUTCFullYear().toString() + '-' + fix((now.getUTCMonth() + 1).toString()) + '-' + fix(now.getUTCDate().toString())
      + ' ' + fix(now.getUTCHours().toString()) + ':' + fix(now.getUTCMinutes().toString()) + ':' + fix(now.getUTCSeconds().toString())
      + ' UTC';
 }
