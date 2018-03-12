@@ -8,8 +8,7 @@ var socket;
 var othername;
 var username = "";
 
-//var serverAddress = "ws://chatter.lundstig.com:44001"
-var serverAddress = "ws://127.0.0.1:44001"
+var serverAddress = "ws://chatter.lundstig.com:44001"
 
 var inputUsername = $("#username");
 var buttonGo = $("#go");
