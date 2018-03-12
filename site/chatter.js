@@ -8,6 +8,9 @@ var socket;
 var othername;
 var username = "";
 
+//var serverAddress = "ws://chatter.lundstig.com:44001"
+var serverAddress = "ws://127.0.0.1:44001"
+
 var inputUsername = $("#username");
 var buttonGo = $("#go");
 const KeyEnter = 13;
@@ -35,7 +38,7 @@ function setup() {
 	$("#setup").fadeOut(200);
 	$(".spinner").delay(250).fadeIn(200);
 
-	socket = new WebSocket("ws://chatter-krarl.rhcloud.com:8000");
+	socket = new WebSocket(serverAddress);
 	$(window).unload(function() {
 		var disconnect = { type: "disconnect" };
 		socket.send(JSON.stringify(disconnect));

@@ -7,7 +7,11 @@ var sanitize = require("sanitize-filename");
 
 var nextId = 1;
 
-var saveConversations = true;
+var saveConversations = devMode();
+
+function devMode() {
+    return process.env.DEVMODE != undefined;
+}
 
 function getUnixTime() {
     return Math.floor(Date.now() / 1000)
@@ -63,15 +67,15 @@ function connectUsers(a, b) {
     send(b.connection, 'start', a.name);
 }
 
-var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
-var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+if (devMode()) {
+	log('Running in DEVELOPMENT MODE')
+}
+
+var port = 8080;
+var ip = '0.0.0.0';
 log('PORT=' + port + ' IP=' + ip);
 
-var dir = process.env.OPENSHIFT_DATA_DIR || '';
-
-if (process.env.OPENSHIFT_APP_NAME == undefined) {
-    saveConversations = false; //vill inte ha massa loggar från då jag testat lokalt
-}
+var dir = '/data/';
 
 var server = http.createServer(function(request, response) {
     log('Received request for ' + request.url + ' from ' + request.headers['x-forwarded-for']);
@@ -95,14 +99,14 @@ wsServer = new WebSocketServer({
 });
 
 function originIsAllowed(origin) {
-    if (process.env.OPENSHIFT_NAMESPACE != undefined) {
-        if (origin == "http://www.lundstig.com" || origin == "https://www.lundstig.com" || origin == "http://krarl.github.io" || origin == "https://krarl.github.io")
-            return true;
-        else
-            return false;
+    if (devMode()) {
+        return true;
     }
 
-    return true;
+    if (origin == "http://www.lundstig.com" || origin == "https://www.lundstig.com")
+        return true;
+    else
+        return false;
 }
 
 function nameConnection(connection) {
@@ -113,7 +117,7 @@ function endChat(id) {
     if (users[id].other != null) {
         log(nameConnection(users[id].connection) + ' and ' + nameConnection(users[id].other.connection) + ' ended their chat');
         if (saveConversations) {
-            var path = dir + "logs/" + getPrettyTime() + "-" + sanitize(users[id].name + "-" + users[id].other.name);
+            var path = dir + getPrettyTime() + "-" + sanitize(users[id].name + "-" + users[id].other.name);
             fs.writeFile(path, users[id].conversation, function(err) {
                 if(err)
                     return log("Error saving file: " + err);
